@@ -18,8 +18,8 @@ import itertools
 import os
 import os.path
 import re
-from flask import (Module, send_from_directory, render_template, json,
-                   _request_ctx_stack, abort, url_for)
+from flask import (send_from_directory, render_template, json,
+                   _request_ctx_stack, abort, url_for, current_app)
 from jinja2 import contextfunction
 from jinja2.loaders import FileSystemLoader, BaseLoader, TemplateNotFound
 from operator import attrgetter
@@ -140,6 +140,7 @@ class Theme(object):
         This is a Jinja2 template loader that loads templates from the theme's
         ``templates`` directory.
         """
+        print "jinja loader path: {}".format(self.templates_path)
         return FileSystemLoader(self.templates_path)
 
 
@@ -315,8 +316,11 @@ class ThemeTemplateLoader(BaseLoader):
         BaseLoader.__init__(self)
 
     def get_source(self, environment, template):
+        print "get template: {}".format(template)
         if self.as_blueprint and template.startswith("_themes/"):
             template = template[8:]
+        else:
+            template = '{}/{}'.format(current_app.config.get('THEME'), template)
         try:
             themename, templatename = template.split('/', 1)
             ctx = _request_ctx_stack.top
@@ -344,21 +348,6 @@ def template_exists(templatename):
 
 
 ### theme functionality
-
-
-themes_mod = Module(__name__, name='_themes', url_prefix='/_themes')
-themes_mod.jinja_loader     # prevent any of the property's methods from
-                            # taking effect
-themes_mod.jinja_loader = ThemeTemplateLoader(False)
-
-
-if USING_BLUEPRINTS:
-    themes_blueprint = Blueprint('_themes', __name__, url_prefix='/_themes')
-    themes_blueprint.jinja_loader
-    themes_blueprint.jinja_loader = ThemeTemplateLoader(True)
-
-
-@themes_mod.route('/<themeid>/<path:filename>')
 def static(themeid, filename):
     try:
         ctx = _request_ctx_stack.top
@@ -366,6 +355,13 @@ def static(themeid, filename):
     except KeyError:
         abort(404)
     return send_from_directory(theme.static_path, filename)
+
+
+
+if USING_BLUEPRINTS:
+    themes_blueprint = Blueprint('_themes', __name__, url_prefix='/_themes')
+    themes_blueprint.jinja_loader
+    themes_blueprint.jinja_loader = ThemeTemplateLoader(True)
 
 
 if USING_BLUEPRINTS:
@@ -398,7 +394,7 @@ def setup_themes(app, loaders=None, app_identifier=None,
     if USING_BLUEPRINTS:
         app.register_blueprint(themes_blueprint, url_prefix=theme_url_prefix)
     else:
-        app.register_module(themes_mod, url_prefix=theme_url_prefix)
+        raise Exception("error without blueprint")
 
 
 def active_theme(ctx):

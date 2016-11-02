@@ -1,9 +1,9 @@
-============
-Flask-Themes
-============
-.. currentmodule:: flaskext.themes
+===========
+Flask-Theme
+===========
+.. currentmodule:: flask_theme
 
-Flask-Themes makes it easy for your application to support a wide range of
+Flask-Theme makes it easy for your application to support a wide range of
 appearances.
 
 .. contents::
@@ -11,8 +11,8 @@ appearances.
    :backlinks: none
 
 
-Writing Themes
-==============
+Writing Theme
+=============
 A theme is simply a folder containing static media (like CSS files, images,
 and JavaScript) and Jinja2 templates, with some metadata. A theme folder
 should look something like this:
@@ -226,7 +226,7 @@ templates can use those building blocks to form the more complicated pages.
 Selecting Themes
 ----------------
 How exactly you select the theme will vary between applications, so
-Flask-Themes doesn't make the decision for you. If your app is any larger than
+Flask-Theme doesn't make the decision for you. If your app is any larger than
 a few views, though, you will probably want to provide a helper function that
 selects the theme based on whatever (settings, logged-in user, page) and
 renders the template. For example::

@@ -1,7 +1,7 @@
 """
-Flask-Themes
+Flask-Theme
 ------------
-Flask-Themes provides infrastructure for theming support in Flask
+Flask-Theme provides infrastructure for theming support in Flask
 applications. It takes care of:
 
 - Loading themes
@@ -11,9 +11,9 @@ applications. It takes care of:
 
 Links
 `````
-* `documentation <http://packages.python.org/Flask-Themes>`_
+* `documentation <http://flask-theme.readthedocs.io/>`_
 * `development version
-  <http://bitbucket.org/leafstorm/flask-themes/get/tip.gz#egg=Flask-Themes-dev>`_
+<https://github.com/yetship/flask-theme>`_
 
 
 """
@@ -24,15 +24,15 @@ if sys.version_info < (2, 6):
     requires.append('simplejson')
 
 setup(
-    name='Flask-Themes',
-    version='0.1.4',
-    url='http://bitbucket.org/leafstorm/flask-themes/',
+    name='Flask-Theme',
+    version='0.1.0',
+    url='https://github.com/yetship/flask-theme',
     license='MIT',
-    author='Matthew "LeafStorm" Frazier',
-    author_email='leafstormrush@gmail.com',
+    author='Yetship',
+    author_email='liqianglau@outlook.com',
     description='Provides infrastructure for theming Flask applications',
     long_description=__doc__,
-    packages=['flask_themes'],
+    packages=['flask_theme'],
     zip_safe=False,
     platforms='any',
     install_requires=requires,
