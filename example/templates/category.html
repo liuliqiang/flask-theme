@@ -1,4 +1,4 @@
-{% extends "base.html" %}{% block title %}
+{% extends "base.jade" %}{% block title %}
 <title>{{request.args.s or tags.join('+') or site.title|escape}}</title>{% endblock %}{% block content %}{% from "include/macros.jade" import make_posts_list %}
 
 <div class="primary">{{make_posts_list()}}

@@ -1,0 +1,38 @@
+<html>
+  <head>{% block title %}
+    <title>{{site.title|escape}}</title>{% endblock %}
+    <meta name="viewport" content="width=device-width; initial-scale=1; maximum-scale=1"/>
+    <meta name="keywords"{{__pyjade_attrs(attrs=[('content',(site.keywords.escaped))])}}/>
+    <meta name="description"{{__pyjade_attrs(attrs=[('content',(site.raw_content.escaped))])}}/>
+    <meta name="renderer" content="webkit"/><!--[if lt IE 9]>
+    <load{{__pyjade_attrs(attrs=[('html5shim.googlecode.com/svn/trunk/html5.js',(True))])}}></load><![endif]--><!--[if IE]>
+    <load{{__pyjade_attrs(attrs=[('/template/sass/ie.scss',(True))])}}></load><![endif]-->
+    <load{{__pyjade_attrs(attrs=[('fonts',(True))])}}></load>
+    <load{{__pyjade_attrs(attrs=[('/template/sass',(True)), ('normalize.scss',(()), ('screen.scss',()))])}}></load>
+  </head>
+  <body>
+    <div id="wrap">
+      <header id="header" class="cf">
+        <div class="logo"><a href="/">{{site.title|escape}}</a>
+        </div>
+        <nav class="main-nav">
+          <ul class="menu">
+            <li>{{a_with_selected('/', 'Home')|escape}}</li>
+            <li>{{a_with_selected('/archive', 'Archive')|escape}}</li>
+            <li>{{a_with_selected('/album', 'Photos')|escape}}</li>
+            <li>{{a_with_selected('/links.md', 'Links')|escape}}</li>
+            <li>{{a_with_selected('/about.md', 'About')|escape}}</li>
+          </ul>
+        </nav>
+      </header>
+      <div id="main" class="cf">{% block content %}{% endblock %}
+      </div>
+      <footer id="footer">
+        <div class="footer-right"><a href="/template" title="Clone Template"><i class="fa fa-cloud-download"></i></a>
+        </div>
+        <div class="copyright">Powered by &nbsp;<a href="https://www.farbox.com" target="_blank">FarBox &nbsp;</a>Theme by <a href="http://motype.org">Deepure</a> . Thanks for<a href="http://fontawesome.io/">Fontawesome</a>&nbsp; &<a href="http://dropbox.com/">Dropbox</a>
+        </div>
+      </footer>
+    </div>
+  </body>
+</html>

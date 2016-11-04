@@ -1,10 +1,14 @@
-{% extends theme('layout.html') %}
-{% from theme('_post.html') import show_post %}
-
-{% set title = post.title %}
-
-{% block body %}
-
-{{ show_post(post) }}
-
-{% endblock body %}
+{% extends "base.jade" %}{% block title %}
+<title>{{post.title|escape}}</title>{% endblock %}{% block content %}
+<div class="primary">
+  <article class="post">
+    <header>
+      <h2><a{{__pyjade_attrs(attrs=[('href',(post.url))])}}>{{post.title|escape}}</a>
+      </h2>
+      <div class="entry-meta"><span><i class="fa fa-calendar">&nbsp;</i>{{ post.date.format('%Y-%m-%d') }}</span>
+{% if  post.tags %}<span><i class="fa fa-tags">&nbsp;</i>{% for tag in __pyjade_iter(post.tags,1) %}<a href="/tags/{{tag}}" class="tag">&nbsp;{{tag}}</a>{% endfor %}</span>{% endif %}<span class="count"><i class="fa fa-book"></i>&nbsp;{{post.visits}}</span>
+      </div>
+    </header>
+    <div class="entry">{{post.content|escape}}</div>{% include "include/comments.jade" %}
+  </article>
+</div>{% include "include/sider.html" %}{% endblock %}

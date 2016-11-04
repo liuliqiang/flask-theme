@@ -1,0 +1,9 @@
+{% extends "base.jade" %}{% block title %}
+<title>{{folder.title or 'Images'|escape}}</title>{% endblock %}{% block content %}{% from "include/macros.jade" import make_pager %}
+{% set albums = get_data(types=['image', 'folder'], path=folder.path, min_images_count=1, level=1, limit=6) %}
+<ul class="image-list cf">{% for album in __pyjade_iter(albums,1) %}{% if  album.content_type=='folder' %}
+  <li class="folder"><a href="/album/{{album.path}}"><img src="{{album.url}}?width=320&height=214&fixed=true"{{__pyjade_attrs(attrs=[('title',(album.title))])}}/><span>{{ album.images_count}} photos</span></a>
+  </li>{% else %}
+  <li><a href="/image/{{album.path}}"><img src="{{album.url}}?width=320&height=214&fixed=true"{{__pyjade_attrs(attrs=[('title',(album.title))])}}/></a>
+  </li>{% endif %}{% endfor %}
+</ul>{{make_pager()}}{% endblock %}

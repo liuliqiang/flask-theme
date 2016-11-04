@@ -1,8 +1,9 @@
 {
-    "application": "themesandbox", 
-    "identifier": "calmblue", 
-    "name": "Calm Blue", 
+    "application": "mdpress", 
+    "identifier": "fblog", 
+    "name": "FBlog Tempalte 4 Mdpress", 
     "author": "LeafStorm",
     "description": "A calm, blue theme based on Flaskr.",
     "license": "MIT/X11"
 }
+

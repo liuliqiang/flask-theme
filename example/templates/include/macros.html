@@ -1,0 +1,13 @@
+{% macro make_pager(pager_name=None) %}{% if  pager_name: %}{% set pager = get_paginator(pager_name) %}{% endif %}
+<div class="pager cf">{% if  pager.has_pre or pager.has_next %}{% if  pager.has_pre %}<a{{__pyjade_attrs(attrs=[('href',(pager.pre_page_url))])}} class="prev"><i class="fa fa-angle-left"></i>&nbsp;{{ '上一页' if lang=='zh_cn' else  'Previous'}}</a>{% endif %}
+{% if  pager.has_next %}<a{{__pyjade_attrs(attrs=[('href',(pager.next_page_url))])}} class="next"><i class="fa fa-angle-right"></i>&nbsp;{{ '下一页' if lang=='zh_cn' else  'Next'}}</a>{% endif %}{% endif %}
+</div>{% endmacro %}
+{% macro make_posts_list() %}{% for post in __pyjade_iter(posts,1) %}
+<article class="loop-post">{% if  post.cover %}<a{{__pyjade_attrs(attrs=[('href',(post.url))])}} class="entry-thumbnail"><img{{__pyjade_attrs(attrs=[('src',(post.cover.s200))])}}/></a>{% endif %}
+  <h2><a{{__pyjade_attrs(attrs=[('href',(post.url))])}}>{{post.title|escape}}</a>
+  </h2>
+  <div class="entry-meta"><span><i class="fa fa-calendar">&nbsp;</i>{{ post.date.format('%Y-%m-%d') }}</span>
+{% if  post.tags %}<i class="fa fa-tags">&nbsp;</i>{% for tag in __pyjade_iter(post.tags,1) %}<a href="/tags/{{tag}}" class="tag">&nbsp;{{tag}}</a>{% endfor %}{% endif %}<span class="count"><i class="fa fa-book"></i>&nbsp;{{post.visits}}</span>
+  </div>
+  <div class="post-intro">{{post.content.limit(300).no_pic|escape}}</div>
+</article>{% endfor %}{{make_pager()}}{% endmacro %}

@@ -1,0 +1,26 @@
+<div class="sider">
+  <aside>
+    <h3><i class="fa fa-magic"></i><span>&nbsp; Recent Articles</span>
+    </h3>
+    <ul class="recent_posts">{% set rposts = get_data(path='/', type='post', limit=6, with_page=False) %}{% for post in __pyjade_iter(rposts,1) %}
+      <li class="listing-item"><a{{__pyjade_attrs(attrs=[('href',(post.url)), ('title',(post.title))])}}>{{post.title|escape}}</a>
+      </li>{% endfor %}
+    </ul>
+  </aside>{% if  site.configs.duoshuo %}
+  <aside>
+    <h3><i class="fa fa-comments"></i><span>&nbsp; Recent Comments</span>
+    </h3>
+    <ul data-show-title="0" data-show-time="0" data-show-avatars="0" class="ds-recent-comments"></ul>
+  </aside>{% elif  site.configs.disqus %}
+  <aside>
+    <h3><i class="fa fa-comments"></i><span>&nbsp; Recent Comments</span>
+    </h3>
+    <script type="text/javascript" src="http://{{site.configs.disqus}}.disqus.com/recent_comments_widget.js?num_items=5&hide_avatars=1&excerpt_length=50&hide_mods=1"></script>
+  </aside>{% endif %}{% if  site.tags %}
+  <aside>
+    <h3><i class="fa fa-tags"></i><span>&nbsp;Tags</span>
+    </h3>
+    <div>{% for tag_name,tag_count in __pyjade_iter(site.tags,2) %}<a href="/tags/{{tag_name}}">{{tag_name}} &nbsp;</a>{% endfor %}
+    </div>
+  </aside>{% endif %}
+</div>
