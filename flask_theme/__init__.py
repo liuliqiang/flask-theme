@@ -13,7 +13,7 @@ It takes care of:
 :copyright: 2010 Matthew "LeafStorm" Frazier
 :license:   MIT/X11, see LICENSE for details
 """
-from __future__ import with_statement
+
 import itertools
 import os
 import os.path
@@ -76,7 +76,7 @@ class Theme(object):
         #: The language codes are all lowercase, and the ``en`` key is
         #: preloaded with the base description.
         self.localized_desc = dict(
-            (k.split('_', 1)[1].lower(), v) for k, v in i.items()
+            (k.split('_', 1)[1].lower(), v) for k, v in list(i.items())
             if k.startswith('description_')
         )
         self.localized_desc.setdefault('en', self.description)
@@ -140,7 +140,7 @@ class Theme(object):
         This is a Jinja2 template loader that loads templates from the theme's
         ``templates`` directory.
         """
-        print "jinja loader path: {}".format(self.templates_path)
+        print("jinja loader path: {}".format(self.templates_path))
         return FileSystemLoader(self.templates_path)
 
 
@@ -195,7 +195,7 @@ def theme_paths_loader(app):
     name of its directory.
     """
     theme_paths = app.config.get('THEME_PATHS', ())
-    if isinstance(theme_paths, basestring):
+    if isinstance(theme_paths, str):
         theme_paths = [p.strip() for p in theme_paths.split(';')]
     return starchain(
         load_themes_from(path) for path in theme_paths
@@ -249,7 +249,7 @@ class ThemeManager(object):
         """
         This yields all the `Theme` objects, in sorted order.
         """
-        return sorted(self.themes.itervalues(), key=attrgetter('identifier'))
+        return sorted(iter(self.themes.values()), key=attrgetter('identifier'))
 
     def bind_app(self, app):
         """
@@ -339,7 +339,7 @@ class ThemeTemplateLoader(BaseLoader):
         res = []
         ctx = _request_ctx_stack.top
         fmt = '_themes/%s/%s'
-        for ident, theme in ctx.app.theme_manager.themes.iteritems():
+        for ident, theme in ctx.app.theme_manager.themes.items():
             res.extend((fmt % (ident, t)).encode("utf8")
                        for t in theme.jinja_loader.list_templates())
         return res
