@@ -318,12 +318,15 @@ class ThemeTemplateLoader(BaseLoader):
     def get_source(self, environment, template):
         if self.as_blueprint and template.startswith("_themes/"):
             template = template[8:]
-        else:
+        elif 'OUT_OF_THEMES' in current_app.config:
             for name in current_app.config.get('OUT_OF_THEMES'):
                 if template[:len(name)] == name:
                     break
             else:
                 template = '{}/{}'.format(current_app.config.get('THEME'), template)
+        else:
+            template = '{}/{}'.format(current_app.config.get('THEME'), template)
+
         try:
             themename, templatename = template.split('/', 1)
             ctx = _request_ctx_stack.top
