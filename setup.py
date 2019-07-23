@@ -26,9 +26,9 @@ if sys.version_info < (2, 6):
 setup(
     name='Flask-Theme',
     version='0.2.0',
-    url='https://github.com/yetship/flask-theme',
+    url='https://github.com/liuliqiang/flask-theme',
     license='MIT',
-    author='Yetship',
+    author='Liqiang Lau',
     author_email='liqianglau@outlook.com',
     description='Provides infrastructure for theming Flask applications',
     long_description=__doc__,
