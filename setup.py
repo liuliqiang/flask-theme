@@ -23,10 +23,6 @@ Links
 import sys
 from setuptools import setup
 
-requires = ['Flask>=0.6']
-if sys.version_info < (2, 6):
-    requires.append('simplejson')
-
 setup(
     name='flask-theme',
     version='0.3.0',
@@ -40,8 +36,8 @@ setup(
     py_modules=['flask_theme'],
     zip_safe=False,
     platforms='any',
-    install_requires=requires,
-    tests_require='nose',
+    install_requires=['Flask>=0.6'],
+    tests_require=['nose'],
     test_suite='nose.collector',
     classifiers=[
         'Development Status :: 4 - Beta',
