@@ -25,7 +25,7 @@ if sys.version_info < (2, 6):
 
 setup(
     name='flask-theme',
-    version='0.2.0',
+    version='0.3.0',
     url='https://github.com/liuliqiang/flask-theme',
     license='MIT',
     author='Liqiang Lau',
@@ -47,6 +47,8 @@ setup(
         'Operating System :: OS Independent',
         'Programming Language :: Python 2.7',
         'Programming Language :: Python 3.5',
+        'Programming Language :: Python 3.6',
+        'Programming Language :: Python 3.7',
         'Topic :: Internet :: WWW/HTTP :: Dynamic Content',
         'Topic :: Software Development :: Libraries :: Python Modules'
     ]
