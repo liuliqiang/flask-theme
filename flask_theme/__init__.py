@@ -305,7 +305,6 @@ def get_themes_list():
 
 
 ### theme template loader
-
 class ThemeTemplateLoader(BaseLoader):
     """
     This is a template loader that loads templates from the current app's
@@ -361,7 +360,6 @@ def static(themeid, filename):
     except KeyError:
         abort(404)
     return send_from_directory(theme.static_path, filename)
-
 
 
 if USING_BLUEPRINTS:

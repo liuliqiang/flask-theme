@@ -1,7 +1,7 @@
 """
-Flask-Theme
+flask-theme
 ------------
-Flask-Theme provides infrastructure for theming support in Flask
+flask-theme provides infrastructure for theming support in Flask
 applications. It takes care of:
 
 - Loading themes
@@ -13,7 +13,7 @@ Links
 `````
 * `documentation <http://flask-theme.readthedocs.io/>`_
 * `development version
-<https://github.com/yetship/flask-theme>`_
+<https://github.com/liuliqiang/flask-theme>`_
 
 
 """
@@ -24,7 +24,7 @@ if sys.version_info < (2, 6):
     requires.append('simplejson')
 
 setup(
-    name='Flask-Theme',
+    name='flask-theme',
     version='0.2.0',
     url='https://github.com/liuliqiang/flask-theme',
     license='MIT',
@@ -33,6 +33,7 @@ setup(
     description='Provides infrastructure for theming Flask applications',
     long_description=__doc__,
     packages=['flask_theme'],
+    py_modules=['flask_theme'],
     zip_safe=False,
     platforms='any',
     install_requires=requires,

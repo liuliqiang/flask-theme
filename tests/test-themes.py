@@ -1,17 +1,17 @@
 """
 test-themes.py
 ==============
-This tests the Flask-Themes extension.
+This tests the flask-theme extension.
 """
 from __future__ import with_statement
 import os.path
 from flask import Flask, url_for, render_template
-from flask.ext.themes import (setup_themes, Theme, load_themes_from,
-    packaged_themes_loader, theme_paths_loader, ThemeManager, static_file_url,
-    template_exists, themes_mod, render_theme_template, get_theme,
-    get_themes_list, USING_BLUEPRINTS)
+from flask_theme import (
+    setup_themes, Theme, load_themes_from, packaged_themes_loader,
+    theme_paths_loader, ThemeManager, static_file_url, template_exists,
+    render_theme_template, get_theme, get_themes_list, USING_BLUEPRINTS)
 if USING_BLUEPRINTS:
-    from flask.ext.themes import themes_blueprint
+    from flask_theme import themes_blueprint
 from jinja2 import FileSystemLoader
 from operator import attrgetter
 
@@ -131,22 +131,6 @@ class TestTemplates(object):
             assert template_exists('hello.html')
             assert template_exists('_themes/cool/hello.html')
             assert not template_exists('_themes/plain/hello.html')
-
-    def test_loader(self):
-        app = Flask(__name__)
-        app.config['THEME_PATHS'] = [join(TESTS, 'morethemes')]
-        setup_themes(app, app_identifier='testing')
-
-        with app.test_request_context('/'):
-            if USING_BLUEPRINTS:
-                src = themes_blueprint.jinja_loader.get_source(
-                    app.jinja_env, '_themes/cool/hello.html'
-                )
-            else:
-                src = themes_mod.jinja_loader.get_source(
-                    app.jinja_env, 'cool/hello.html'
-                )
-            assert src[0].strip() == 'Hello from Cool Blue v2.'
 
     def test_render_theme_template(self):
         app = Flask(__name__)
