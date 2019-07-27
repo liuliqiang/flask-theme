@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 """
 test-themes.py
 ==============
@@ -14,6 +15,18 @@ if USING_BLUEPRINTS:
     from flask_theme import themes_blueprint
 from jinja2 import FileSystemLoader
 from operator import attrgetter
+
+import sys
+if sys.version_info < (3, 0):
+    # 2.x
+    reload(sys)
+    sys.setdefaultencoding('utf-8')
+elif sys.version_info <= (3, 3):
+    import imp
+    imp.reload(sys)
+else:
+    import importlib
+    importlib.reload(sys)
 
 TESTS = os.path.dirname(__file__)
 join = os.path.join
@@ -68,8 +81,7 @@ class TestSetup(object):
         assert app.theme_manager is manager
         app.config['THEME_PATHS'] = [join(TESTS, 'morethemes')]
         manager.refresh()
-        themeids = manager.themes.keys()
-        themeids.sort()
+        themeids = sorted(manager.themes.keys())
         assert themeids == ['cool', 'plain']
         assert manager.themes['cool'].name == 'Cool Blue v2'
 
@@ -129,7 +141,7 @@ class TestTemplates(object):
 
         with app.test_request_context('/'):
             assert template_exists('hello.html')
-            assert template_exists('_themes/cool/hello.html')
+            assert template_exists('_themes/cool/你好.html')
             assert not template_exists('_themes/plain/hello.html')
 
     def test_render_theme_template(self):
@@ -138,7 +150,7 @@ class TestTemplates(object):
         setup_themes(app, app_identifier='testing')
 
         with app.test_request_context('/'):
-            coolsrc = render_theme_template('cool', 'hello.html').strip()
+            coolsrc = render_theme_template('cool', '你好.html').strip()
             plainsrc = render_theme_template('plain', 'hello.html').strip()
             assert coolsrc == 'Hello from Cool Blue v2.'
             assert plainsrc == 'Hello from the application'

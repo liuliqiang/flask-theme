@@ -349,6 +349,8 @@ class ThemeTemplateLoader(BaseLoader):
 
 def template_exists(templatename):
     ctx = _request_ctx_stack.top
+    print("all template")
+    print(ctx.app.jinja_env.list_templates())
     return templatename in containable(ctx.app.jinja_env.list_templates())
 
 
