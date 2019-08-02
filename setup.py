@@ -12,11 +12,9 @@ applications. It takes care of:
 Links
 `````
 * `documentation <http://flask-theme.readthedocs.io/>`_
-* `development version
-<https://github.com/liuliqiang/flask-theme>`_
-
-
+* `development version <https://github.com/liuliqiang/flask-theme>`_
 """
+
 from setuptools import setup
 import sys
 requires = ['Flask>=0.6']
@@ -25,7 +23,7 @@ if sys.version_info < (2, 6):
 
 setup(
     name='flask-theme',
-    version='0.3.0',
+    version='0.3.3',
     url='https://github.com/liuliqiang/flask-theme',
     license='MIT',
     author='Liqiang Lau',
@@ -45,10 +43,14 @@ setup(
         'Intended Audience :: Developers',
         'License :: OSI Approved :: MIT License',
         'Operating System :: OS Independent',
-        'Programming Language :: Python 2.7',
-        'Programming Language :: Python 3.5',
-        'Programming Language :: Python 3.6',
-        'Programming Language :: Python 3.7',
+        'Programming Language :: Python',
+        'Programming Language :: Python :: 2',
+        'Programming Language :: Python :: 2.7',
+        'Programming Language :: Python :: 3',
+        'Programming Language :: Python :: 3.5',
+        'Programming Language :: Python :: 3.6',
+        'Programming Language :: Python :: 3.7',
+        'Programming Language :: Python :: 3.8',
         'Topic :: Internet :: WWW/HTTP :: Dynamic Content',
         'Topic :: Software Development :: Libraries :: Python Modules'
     ]
