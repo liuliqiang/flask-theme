@@ -11,13 +11,5 @@ deploy:
     user: yylucifer
     password: ${PYPI_PASSWORD}
     on:
-      python: 2.7
-      tags: true
-      branch: master
-  - provider: pypi
-    user: yylucifer
-    password: ${PYPI_PASSWORD}
-    on:
-      python: 3.6
       tags: true
       branch: master
