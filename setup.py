@@ -1,25 +1,24 @@
 """
 flask-theme
-------------
+-----------
+
 flask-theme provides infrastructure for theming support in Flask
 applications. It takes care of:
 
-- Loading themes
-- Rendering templates from themes
-- Serving static files like CSS and images from themes
+- loading themes
+- rendering templates from themes
+- serving static files like CSS and images from themes
 
 
 Links
 `````
+
 * `documentation <http://flask-theme.readthedocs.io/>`_
 * `development version <https://github.com/liuliqiang/flask-theme>`_
 """
 
-from setuptools import setup
 import sys
-requires = ['Flask>=0.6']
-if sys.version_info < (2, 6):
-    requires.append('simplejson')
+from setuptools import setup
 
 setup(
     name='flask-theme',
@@ -34,8 +33,8 @@ setup(
     py_modules=['flask_theme'],
     zip_safe=False,
     platforms='any',
-    install_requires=requires,
-    tests_require='nose',
+    install_requires=['Flask>=0.6'],
+    tests_require=['nose'],
     test_suite='nose.collector',
     classifiers=[
         'Development Status :: 4 - Beta',
@@ -50,7 +49,6 @@ setup(
         'Programming Language :: Python :: 3.5',
         'Programming Language :: Python :: 3.6',
         'Programming Language :: Python :: 3.7',
-        'Programming Language :: Python :: 3.8',
         'Topic :: Internet :: WWW/HTTP :: Dynamic Content',
         'Topic :: Software Development :: Libraries :: Python Modules'
     ]
