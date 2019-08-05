@@ -14,10 +14,7 @@ Links
 `````
 
 * `documentation <http://flask-theme.readthedocs.io/>`_
-* `development version
-  <https://github.com/liuliqiang/flask-theme>`_
-
-
+* `development version <https://github.com/liuliqiang/flask-theme>`_
 """
 
 import sys
@@ -25,7 +22,7 @@ from setuptools import setup
 
 setup(
     name='flask-theme',
-    version='0.3.0',
+    version='0.3.3',
     url='https://github.com/liuliqiang/flask-theme',
     license='MIT',
     author='Liqiang Lau',
@@ -45,6 +42,7 @@ setup(
         'Intended Audience :: Developers',
         'License :: OSI Approved :: MIT License',
         'Operating System :: OS Independent',
+        'Programming Language :: Python',
         'Programming Language :: Python :: 2',
         'Programming Language :: Python :: 2.7',
         'Programming Language :: Python :: 3',
