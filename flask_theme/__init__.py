@@ -15,6 +15,7 @@ It takes care of:
 """
 
 import itertools
+import logging
 import os
 import os.path
 import re
@@ -140,7 +141,7 @@ class Theme(object):
         This is a Jinja2 template loader that loads templates from the theme's
         ``templates`` directory.
         """
-        print("jinja loader path: {}".format(self.templates_path))
+        logging.getLogger("flask_theme").debug("jinja loader path: {}".format(self.templates_path))
         return FileSystemLoader(self.templates_path)
 
 
@@ -349,8 +350,8 @@ class ThemeTemplateLoader(BaseLoader):
 
 def template_exists(templatename):
     ctx = _request_ctx_stack.top
-    print("all template")
-    print(ctx.app.jinja_env.list_templates())
+    logging.getLogger("flask_theme").debug("all template")
+    logging.getLogger("flask_theme").debug(ctx.app.jinja_env.list_templates())
     return templatename in containable(ctx.app.jinja_env.list_templates())
 
 
