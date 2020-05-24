@@ -22,7 +22,7 @@ from setuptools import setup
 
 setup(
     name='flask-theme',
-    version='0.3.4',
+    version='0.3.5',
     url='https://github.com/liuliqiang/flask-theme',
     license='MIT',
     author='Liqiang Lau',
