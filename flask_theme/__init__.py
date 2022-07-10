@@ -21,7 +21,11 @@ import os.path
 import re
 from flask import (send_from_directory, render_template, json,
                    _request_ctx_stack, abort, url_for, current_app)
-from jinja2 import contextfunction
+try:
+    from jinja2 import contextfunction
+except ImportError:
+    # jinja2 v3.0.0+
+    from jinja2 import pass_context as contextfunction
 from jinja2.loaders import FileSystemLoader, BaseLoader, TemplateNotFound
 from operator import attrgetter
 from werkzeug.utils import cached_property
