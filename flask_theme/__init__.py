@@ -20,7 +20,8 @@ import os
 import os.path
 import re
 from flask import (send_from_directory, render_template, json,
-                   _request_ctx_stack, abort, url_for, current_app)
+                   abort, url_for, current_app)
+from flask.globals import request_ctx
 try:
     from jinja2 import contextfunction
 except ImportError:
@@ -296,7 +297,7 @@ def get_theme(ident):
 
     :param ident: The theme identifier.
     """
-    ctx = _request_ctx_stack.top
+    ctx = request_ctx
     return ctx.app.theme_manager.themes[ident]
 
 
@@ -305,7 +306,7 @@ def get_themes_list():
     This returns a list of all the themes in the current app's theme manager,
     sorted by identifier.
     """
-    ctx = _request_ctx_stack.top
+    ctx = request_ctx
     return list(ctx.app.theme_manager.list_themes())
 
 
@@ -333,7 +334,7 @@ class ThemeTemplateLoader(BaseLoader):
 
         try:
             themename, templatename = template.split('/', 1)
-            ctx = _request_ctx_stack.top
+            ctx = request_ctx
             theme = ctx.app.theme_manager.themes[themename]
         except (ValueError, KeyError):
             raise TemplateNotFound(template)
@@ -344,7 +345,7 @@ class ThemeTemplateLoader(BaseLoader):
 
     def list_templates(self):
         res = []
-        ctx = _request_ctx_stack.top
+        ctx = request_ctx
         fmt = '_themes/%s/%s'
         for ident, theme in ctx.app.theme_manager.themes.items():
             res.extend((fmt % (ident, t))
@@ -353,7 +354,7 @@ class ThemeTemplateLoader(BaseLoader):
 
 
 def template_exists(templatename):
-    ctx = _request_ctx_stack.top
+    ctx = request_ctx
     logging.getLogger("flask_theme").debug("all template")
     logging.getLogger("flask_theme").debug(ctx.app.jinja_env.list_templates())
     return templatename in containable(ctx.app.jinja_env.list_templates())
@@ -362,7 +363,7 @@ def template_exists(templatename):
 ### theme functionality
 def static(themeid, filename):
     try:
-        ctx = _request_ctx_stack.top
+        ctx = request_ctx
         theme = ctx.app.theme_manager.themes[themeid]
     except KeyError:
         abort(404)
