@@ -6,6 +6,8 @@ This tests the flask-theme extension.
 """
 from __future__ import with_statement
 import os.path
+import threading
+import time
 from flask import Flask, url_for, render_template
 from flask_theme import (
     setup_themes, Theme, load_themes_from, packaged_themes_loader,
@@ -201,3 +203,87 @@ class TestTemplates(object):
             data = render_template('static_parent.html').strip()
             url = static_file_url('plain', 'style.css')
             assert data == 'Application, Plain, %s' % url
+
+
+def slow_loader(app):
+    """
+    A fake theme loader that stalls before producing anything, to widen
+    the ThemeManager.refresh() race window enough to hit it deterministically
+    in a test. The real window, scanning the filesystem for theme
+    directories, is normally far too narrow to hit reliably. time.sleep()
+    releases the GIL, so this also guarantees other threads actually get
+    to run during the window, not just that the window is wider in theory.
+    """
+    time.sleep(0.05)
+    yield Theme(join(TESTS, 'themes', 'cool'))
+    yield Theme(join(TESTS, 'themes', 'plain'))
+
+
+class TestThreadSafety(object):
+    def test_first_population_is_race_free(self):
+        # On a fresh ThemeManager, several threads can take their first
+        # look at .themes around the same moment (e.g. several worker
+        # threads of the same app process, all handling their first
+        # request). Each one's first access sees _themes is None and
+        # calls refresh() -- but refresh() used to reset self._themes to
+        # an empty dict before slowly repopulating it, so a second
+        # thread's "is None" check (already False, since the first thread
+        # already set it to {}) returned the still-empty dict directly,
+        # without doing its own refresh -- raising a spurious KeyError
+        # for a theme that's about to exist a moment later.
+        app = Flask(__name__)
+        manager = ThemeManager(app, 'testing', loaders=[slow_loader])
+        assert manager._themes is None
+
+        errors = []
+
+        def reader():
+            try:
+                manager.themes['cool']
+            except KeyError as e:
+                errors.append(e)
+
+        threads = [threading.Thread(target=reader) for _ in range(16)]
+        for t in threads:
+            t.start()
+        for t in threads:
+            t.join()
+
+        assert not errors, "%d of %d concurrent first-time readers saw a spurious KeyError" % (
+            len(errors), len(threads))
+
+    def test_concurrent_refresh_is_race_free(self):
+        # A later, explicit refresh() (e.g. an app deliberately rescanning
+        # for new themes) racing against readers of an already-warm
+        # registry used to make even a *previously present* theme
+        # disappear for the duration of the refresh.
+        app = Flask(__name__)
+        manager = ThemeManager(app, 'testing', loaders=[slow_loader])
+        manager.refresh()
+        assert 'cool' in manager.themes
+
+        errors = []
+        stop = threading.Event()
+
+        def reader():
+            while not stop.is_set():
+                try:
+                    manager.themes['cool']
+                except KeyError as e:
+                    errors.append(e)
+
+        def refresh_then_stop():
+            manager.refresh()
+            stop.set()
+
+        readers = [threading.Thread(target=reader) for _ in range(8)]
+        refresher = threading.Thread(target=refresh_then_stop)
+
+        for t in readers:
+            t.start()
+        refresher.start()
+        refresher.join()
+        for t in readers:
+            t.join()
+
+        assert not errors, "%d reads saw a spurious KeyError during a concurrent refresh" % len(errors)

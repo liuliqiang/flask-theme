@@ -283,11 +283,24 @@ class ThemeManager(object):
         are invoked in the order they are given, so later themes will override
         earlier ones. Any invalid themes found (for example, if the
         application identifier is incorrect) will be skipped.
+
+        This builds the new mapping separately and only publishes it once
+        it's complete, rather than clearing ``self._themes`` and refilling
+        it in place. A concurrent reader on another thread (for example,
+        another thread of the same app taking its first request around the
+        same moment, before anything has been loaded yet) could otherwise
+        observe ``self._themes`` as a real, but still empty or incomplete,
+        dict mid-refresh, and get a spurious `KeyError` for a theme that's
+        about to exist a moment later -- including one that was already
+        there before this refresh even started. Publishing the finished
+        mapping with a single assignment avoids that: a reader only ever
+        sees the old, complete mapping or the new, complete mapping.
         """
-        self._themes = {}
+        themes = {}
         for theme in starchain(ldr(self.app) for ldr in self.loaders):
             if self.valid_app_id(theme.application):
-                self.themes[theme.identifier] = theme
+                themes[theme.identifier] = theme
+        self._themes = themes
 
 
 def get_theme(ident):
